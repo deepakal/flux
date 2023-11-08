@@ -1,0 +1,35 @@
+sourceController:
+  extraEnv:
+    - name: "http_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "https_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "no_proxy"
+      value: "localhost,127.0.0.1,10.0.0.0/8,172.0.0.0/8,.internal,.cluster.local.,.cluster.local,.svc"
+
+helmController:
+  extraEnv:
+    - name: "http_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "https_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "no_proxy"
+      value: "localhost,127.0.0.1,10.0.0.0/8,172.0.0.0/8,.internal,.cluster.local.,.cluster.local,.svc"
+
+kustomizeController:
+  extraEnv:
+    - name: "http_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "https_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "no_proxy"
+      value: "localhost,127.0.0.1,10.0.0.0/8,172.0.0.0/8,.internal,.cluster.local.,.cluster.local,.svc"
+
+notificationController:
+  extraEnv:
+    - name: "http_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "https_proxy"
+      value: "http://10.158.100.1:8080/"
+    - name: "no_proxy"
+      value: "localhost,127.0.0.1,10.0.0.0/8,172.0.0.0/8,.internal,.cluster.local.,.cluster.local,.svc"
