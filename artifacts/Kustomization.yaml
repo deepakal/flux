@@ -5,9 +5,9 @@ metadata:
   name: catalogue-watch
   namespace: nc-system
 spec:
-  interval: 1h
+  interval: 5m
   retryInterval: 1m
-  timeout: 5m
+  timeout: 8m
   sourceRef:
     kind: GitRepository
     name: cnfrepo
@@ -30,9 +30,9 @@ metadata:
   name: claim-watch
   namespace: nc-system
 spec:
-  interval: 1h
+  interval: 5m
   retryInterval: 1m
-  timeout: 5m
+  timeout: 8m
   dependsOn:
     - name: catalogue-watch
   sourceRef:
