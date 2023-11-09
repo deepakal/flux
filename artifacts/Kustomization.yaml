@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cnf-watch
+  name: catalogue-watch
   namespace: nc-system
 spec:
   interval: 1h
@@ -11,6 +11,33 @@ spec:
   sourceRef:
     kind: GitRepository
     name: cnfrepo
-  path: ./cfx
+  path: ./cfx/catalogue
+  prune: true
+  wait: true
+  healthChecks:
+    - apiVersion: apiextensions.crossplane.io/v1
+      kind: CompositeResourceDefinition
+      name: xztss.cnf.nokia.com
+      namespace: nc-system
+    - apiVersion: apiextensions.crossplane.io/v1
+      kind: Composition
+      name: zts-service
+      namespace: nc-system
+  ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: claim-watch
+  namespace: nc-system
+spec:
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: catalogue-watch
+  sourceRef:
+    kind: GitRepository
+    name: cnfrepo
+  path: ./cfx/claim
   prune: true
   wait: true
