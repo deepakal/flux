@@ -4,4 +4,3 @@ namespace: default
 resources:
   - composition.yaml
   - services_profile_xrd.yaml
-  - intent.yaml
