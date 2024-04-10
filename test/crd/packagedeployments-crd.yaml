@@ -1,0 +1,153 @@
+
+kind: CustomResourceDefinition
+metadata:
+  name: packagedeployments.nc.nokia.com
+spec:
+  group: nc.nokia.com
+  names:
+    kind: PackageDeployment
+    listKind: PackageDeploymentList
+    plural: packagedeployments
+    singular: packagedeployment
+    shortNames:
+      - pd
+      - pds
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.state
+      name: STATE
+      type: string
+    - jsonPath: .status.deployment.instantiated
+      name: INSTANTIATED
+      type: boolean
+    - jsonPath: .status.conditions[?(@.type=="Ready")].status
+      name: Ready
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: LCM Resource instance
+        properties:
+          apiVersion:
+            description: 'See: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'See: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              liveGitServer:
+                description: Name of the git server hosting the repository
+                type: string
+              configurationPackageId:
+                description: source package revision reference from blueprint repo
+                type: string
+              lifecycle:
+                description: repository lifecycle
+                type: string
+                default: Draft
+                enum:
+                  - Draft
+                  - Propose
+                  - Approve
+                  - Reject
+                  - Instantiate
+              repositoryName:
+                description: blueprint repository name, if not provided then will be taken from configuration package
+                type: string
+              deploymentPackageRevision:
+                description: New package revision can be provided once package is deployed
+                type: string
+              placement:
+                description: placement details
+                type: object
+                properties:
+                  name:
+                    description: Name of k8s cluster connection config
+                    type: string
+                  namespace:
+                    description: target namespace where package needs to be deployed
+                    type: string
+                required:
+                - name
+                - namespace
+            required:
+            - liveGitServer
+            - configurationPackageId
+            type: object
+          status:
+            type: object
+            properties:
+              state:
+                type: string
+                description: repository lifecycle status
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    lastProbeTime:
+                      description: Last time the condition was checked.
+                      format: date-time
+                      type: string
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                  required:
+                    - status
+                    - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                  - type
+                x-kubernetes-list-type: map
+              deployment:
+                description: downstream repo details
+                type: object
+                properties:
+                  instantiated:
+                    description: Resource instantiation status
+                    type: boolean
+                  liveConfigurationPackage:
+                    description: deployment package details
+                    type: object
+                    properties:
+                      packageName:
+                        description: deployment package name
+                        type: string
+                      packageId:
+                        description: deployment package revision id
+                        type: string
+                      packageRevision:
+                        description: deployment package revision
+                        type: string
+                      repositoryName:
+                        description: deployment repository name
+                        type: string
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
