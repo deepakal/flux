@@ -1,7 +1,7 @@
 apiVersion: nc.nokia.com/v1alpha1
 kind: PackageDeployment
 metadata:
-  name: cmm-demo-final
+  name: cmm-demo-1
   namespace: nc-system
 spec:
   liveGitServer: local-git
