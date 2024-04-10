@@ -1,0 +1,12 @@
+apiVersion: nc.nokia.com/v1alpha1
+kind: PackageDeployment
+metadata:
+  name: cmm-demo-2
+  namespace: nc-system
+spec:
+  liveGitServer: local-git
+  configurationPackageId: blueprints-f6ee58a0be3a7242b01ff3867f9a5a1b87b49881
+  placement:
+     name: caas-23
+     namespace: test
+  repositoryName: deployment/udm
